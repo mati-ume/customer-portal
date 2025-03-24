@@ -56,10 +56,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-5. Generate your Supabase types using the Supabase CLI or directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro)
-
-Example (with CLI):
-
+5. Generate your Supabase types using the Supabase CLI or directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro) _or_ use the command below:
+6. 
 ```bash
 npx supabase gen types typescript --project-id your-project-id > src/lib/supabase/types.ts
 ```
