@@ -58,13 +58,13 @@ SUPABASE_SERVICE_ROLE_KEY=
 
 5. Create a public `users` table in Supabase, make the user's `id` column have a fkey pointing to the `auth.users` table (not public). This links the auth user to the public user (please do this otherwise auth will not work).
 
-5. Generate your Supabase types directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro) _or_ use the Supabase CLI:
-6. 
+6. Generate your Supabase types directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro) _or_ use the Supabase CLI:
+
 ```bash
 npx supabase gen types typescript --project-id your-project-id > src/lib/supabase/types.ts
 ```
 
-6. Run the development server
+7. Run the development server
 
 ```bash
 npm run dev
