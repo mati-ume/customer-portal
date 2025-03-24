@@ -48,13 +48,15 @@ npm install
 cp .env.example .env.local
 ```
 
-4. Create a supabase project and add your environment variables in the `.env.local` file
+4. Create a Supabase project and add your environment variables in the `.env.local` file
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
+
+5. Create a public `users` table in Supabase, make the user's `id` column have a fkey pointing to the `auth.users` table (not public). This links the auth user to the public user (please do this otherwise auth will not work).
 
 5. Generate your Supabase types directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro) _or_ use the Supabase CLI:
 6. 
