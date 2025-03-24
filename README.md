@@ -56,7 +56,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-5. Create a public `users` table in Supabase, make the user's `id` column have a fkey pointing to the `auth.users` table (not public). This links the auth user to the public user (please do this otherwise auth will not work).
+5. Create a public `users` table in Supabase, make the user's `id` column have a fkey pointing to the `auth.users` table (not public). This links the auth user to the public user (please do this otherwise auth will not work). You can create this by running the following SQL:
+
+```psql
+create table public.users (
+  id uuid primary key,
+  created_at timestamptz default now(),
+  constraint fk_user_id foreign key (id) references auth.users(id) on delete cascade
+);
+```
 
 6. Generate your Supabase types directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro) _or_ use the Supabase CLI:
 
