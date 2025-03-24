@@ -39,7 +39,7 @@ git clone https://github.com/your-repo/next-supa-shad-boilerplate.git
 2. Install dependencies
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 3. Create a `.env.local` file and add your environment variables
