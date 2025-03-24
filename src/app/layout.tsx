@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 
+import { ThemeProvider } from "@/lib/providers/theme-provider";
+
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
@@ -22,11 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${figtree.className} antialiased`}>
-        {children}
-        
-        <Toaster />
-      </body>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <body className={`${figtree.className} antialiased`}>
+          {children}
+
+          <Toaster />
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
