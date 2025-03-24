@@ -24,20 +24,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <AuthProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
         <body className={`${figtree.className} antialiased`}>
-          {children}
-
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="theme-preference"
+          >
+            {children}
+          </ThemeProvider>
           <Toaster />
-          </body>
-        </ThemeProvider>
+        </body>
       </AuthProvider>
     </html>
   );
