@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 
 import { ThemeProvider } from "@/lib/providers/theme-provider";
+import { AuthProvider } from "@/lib/providers/auth-provider";
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -24,11 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
+      <AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
       >
         <body className={`${figtree.className} antialiased`}>
           {children}
