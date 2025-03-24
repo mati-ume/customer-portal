@@ -4,15 +4,31 @@ NextJS, Supabase, & ShadCN boilerplate to set-up your projects faster.
 
 ## About 🧑‍💻
 
-This project is a boilerplate for NextJS, Supabase, and ShadCN. It is designed to help you get started with your projects faster. I use this boilerplate for all my projects.
+This boilerplate helps you launch modern web apps faster with:
+
+- Next.js for frontend routing and rendering
+- Supabase for auth and database
+- ShadCN/UI for beautifully styled components
+
+I personally use this setup for all my full-stack projects.
 
 ## Features 🌟
 
-- Supabase Auth (login & signup)
-- Protected routes (with supabase auth in middleware)
-- Dashboard layout
+- Authentication (login, signup)
+- Route protection
+- A myriad of pre-installed components
+- Theming
+- Dashboard layout (with sidebar)
 
-## Getting Started 🚀
+## Tech Stack 🛠️
+
+- [Next.js](https://nextjs.org/) – React Framework
+- [Supabase](https://supabase.com/) – Auth & DB
+- [ShadCN/UI](https://ui.shadcn.dev/) – UI Components
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS
+- [TypeScript](https://www.typescriptlang.org/) – Typed JS
+
+## Setup & Getting Started 🚀
 
 1. Clone the repository
 
@@ -40,7 +56,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-5. Generate your supabase types (https://supabase.com/dashboard/project/_/api?page=tables-intro) and set them up in the `src/lib/supabase/types.ts` file
+5. Generate your Supabase types using the Supabase CLI or directly from the dashboard (https://supabase.com/dashboard/project/_/api?page=tables-intro)
+
+Example (with CLI):
+
+```bash
+npx supabase gen types typescript --project-id your-project-id > src/lib/supabase/types.ts
+```
 
 6. Run the development server
 
