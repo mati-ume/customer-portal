@@ -3,48 +3,56 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
-import { Github } from "lucide-react";
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Facebook,
+  Youtube,
+  Twitch,
+} from "lucide-react";
+
+import { brand } from "@/lib/constants/brand";
 
 import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-const footerData = {
-  brand: {
-    name: "Mint",
-    email: "team@getmint.lol",
+const sections = [
+  {
+    title: "Product",
+    links: [
+      { href: "/download", label: "Download" },
+      { href: "#features", label: "Features", isScroll: true },
+      { href: "/info/security", label: "Security" },
+    ],
   },
-  sections: [
-    {
-      title: "Product",
-      links: [
-        { href: "/download", label: "Download" },
-        { href: "#features", label: "Features", isScroll: true },
-        { href: "/info/security", label: "Security" },
-      ],
-    },
-    {
-      title: "Company",
-      links: [
-        { href: "/info/company/about", label: "About Us" },
-        { href: "/info/company/careers", label: "Careers" },
-        { href: "/info/company/faq", label: "FAQ" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { href: "/info/legal/privacy-policy", label: "Privacy Policy" },
-        { href: "/info/legal/terms-of-service", label: "Terms of Service" },
-        { href: "/info/legal/cookie-policy", label: "Cookie Policy" },
-      ],
-    },
-  ],
-  social: [
-    {
-      name: "GitHub",
-      href: "https://github.com/get-mint",
-      icon: <Github className="size-5" />,
-    },
-  ],
+  {
+    title: "Company",
+    links: [
+      { href: "/info/company/about", label: "About Us" },
+      { href: "/info/company/careers", label: "Careers" },
+      { href: "/info/company/faq", label: "FAQ" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { href: "/info/legal/privacy-policy", label: "Privacy Policy" },
+      { href: "/info/legal/terms-of-service", label: "Terms of Service" },
+      { href: "/info/legal/cookie-policy", label: "Cookie Policy" },
+    ],
+  },
+];
+
+const socialIcons = {
+  github: <Github className="size-5" />,
+  twitter: <Twitter className="size-5" />,
+  linkedin: <Linkedin className="size-5" />,
+  instagram: <Instagram className="size-5" />,
+  facebook: <Facebook className="size-5" />,
+  youtube: <Youtube className="size-5" />,
+  twitch: <Twitch className="size-5" />,
 };
 
 export function Footer() {
@@ -66,12 +74,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Logo />
-            <p className="text-sm text-muted-foreground">
-              {footerData.brand.email}
-            </p>
+            <ThemeToggle />
           </div>
 
-          {footerData.sections.map((section) => (
+          {sections.map((section) => (
             <div key={section.title}>
               <h3 className="font-semibold mb-4">{section.title}</h3>
               <ul className="space-y-2">
@@ -102,21 +108,27 @@ export function Footer() {
         <div className="border-t mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © {currentYear} {footerData.brand.name}. All rights reserved.
+              © {currentYear} {brand.name}. All rights reserved.
             </p>
+
             <div className="flex items-center gap-6">
-              {footerData.social.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  className="text-muted-foreground hover:text-primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="sr-only">{social.name}</span>
-                  {social.icon}
-                </Link>
-              ))}
+              {Object.entries(brand.social).map(([platform, href]) => {
+                if (href !== "https://example.com") {
+                  return (
+                    <Link
+                      key={platform}
+                      href={href}
+                      className="text-muted-foreground hover:text-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="sr-only">{platform}</span>
+                      {socialIcons[platform as keyof typeof socialIcons]}
+                    </Link>
+                  );
+                }
+                return null;
+              })}
             </div>
           </div>
         </div>

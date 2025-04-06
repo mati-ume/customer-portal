@@ -19,13 +19,16 @@ And so much more!
 ## Features 🌟
 
 - Authentication (login, signup)
-- Route protection
+- Route protection & RBAC (Role-Based Access Control)
 - A myriad of pre-installed components (shadcn/ui)
 - Built-in theming
 - Dashboard layout (with sidebar)
-- Unauthorized page with redirect to previous page pre-configured
-- A 404 page
+- Unauthorized page (with redirect to previous page pre-configured) & 404 page
 - Supabase email verification
+- Next Top Loader
+- Toaster
+- Configurable brand information (name, description, social links, etc.)
+- Configurable navbar & footer
 
 If there's anything missing here that you think should be added, please open an issue!
 

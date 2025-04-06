@@ -15,8 +15,8 @@ export const brand = {
     instagram: "https://instagram.com/example",
     facebook: "https://facebook.com/example",
     youtube: "https://youtube.com/example",
-    tiktok: "https://tiktok.com/example",
     twitch: "https://twitch.com/example",
-    discord: "https://discord.com/example",
   },
+  // These are the current social media platforms that are supported.
+  // If you want to add more, please request it on the GitHub repo.
 };
