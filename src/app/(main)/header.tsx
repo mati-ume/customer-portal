@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { useRef, useEffect } from "react";
+
 import { useAuth } from "@/lib/hooks/use-auth";
 import { createClient } from "@/lib/supabase/client";
 
@@ -13,11 +15,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-
-import { brand } from "@/lib/constants/brand";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+/**
+ * Add routes where the header should not be sticky. I personally use this
+ * for the landing page, but you can add more routes as needed.
+ */
+const nonStickyRoutes = ["/landing"];
 
 const sections = [
   {
@@ -46,11 +52,34 @@ const sections = [
   },
 ];
 
+/**
+ * Export a ref that other components can use to access the header. I use this
+ * when I want to make a component take up the full height of the page when the
+ * header is fixed.
+ *
+ * Because the header is fixed, we need to export a ref that other components
+ * can shrink their page height to be the height of the page - the height of the
+ * header.
+ */
+export const headerRef = { current: null as HTMLElement | null };
+
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useAuth();
   const supabase = createClient();
+
+  // Export the header height for use in other components
+  useEffect(() => {
+    if (headerRef.current) {
+      const height = headerRef.current.offsetHeight;
+      // Store the height in a CSS custom property
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${height}px`
+      );
+    }
+  }, []);
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -66,7 +95,14 @@ export function Header() {
   };
 
   return (
-    <header className="border-b bg-background sticky top-0 z-50">
+    <header
+      ref={(el) => {
+        headerRef.current = el;
+      }}
+      className={`border-b bg-background ${
+        !nonStickyRoutes.includes(pathname) ? "sticky top-0" : ""
+      } z-50`}
+    >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center">
@@ -79,7 +115,7 @@ export function Header() {
                 <NavigationMenuItem key={section.title}>
                   <NavigationMenuTrigger>{section.title}</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-3 p-4">
+                    <ul className="grid w-[200px] gap-2">
                       {section.links.map((link) => (
                         <li key={link.href}>
                           <NavigationMenuLink asChild>
@@ -88,7 +124,9 @@ export function Header() {
                               onClick={(e) => handleClick(e, link.href)}
                               className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                               target={
-                                link.href.startsWith("/info/") ? "_blank" : undefined
+                                link.href.startsWith("/info/")
+                                  ? "_blank"
+                                  : undefined
                               }
                               rel={
                                 link.href.startsWith("/info/")
@@ -125,15 +163,12 @@ export function Header() {
               </div>
             ) : (
               <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => router.push("/auth/signin")}
-                >
-                  Sign In
-                </Button>
-                <Button onClick={() => router.push("/auth/signup")}>
-                  Sign Up
-                </Button>
+                <Link href="/auth/login">
+                  <Button variant="outline">Log In</Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button>Sign Up</Button>
+                </Link>
               </div>
             )}
           </div>

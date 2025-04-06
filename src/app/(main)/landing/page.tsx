@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
   return (
-    <div className="container mx-auto min-h-screen flex flex-col items-center justify-center p-4 gap-8">
+    <div className="container mx-auto min-h-[calc(100vh-var(--header-height))] flex flex-col items-center justify-center p-4 gap-8">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold">Welcome to {brand.name}</h1>
         <span className="text-muted-foreground max-w-md">
