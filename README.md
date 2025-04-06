@@ -4,7 +4,7 @@ A modern, opinionated template for rapid web development.
 
 ## About 🧑‍💻
 
-Are you a startup founder, developer, or hackathon participant looking to build a web app quickly? Want to skip the boilerplate and get right to building your app?
+Are you a startup founder, developer, vibe coder, or hackathon participant looking to build a web app quickly? Want to skip the boilerplate and get right to building your app?
 
 This template is for you!
 
