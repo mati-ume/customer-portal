@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 
 import { z } from "zod";
 
-import { useAuth } from "@/lib/hooks/use-auth";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/lib/supabase/client";
 
 const signupSchema = z
   .object({
@@ -25,11 +24,12 @@ const signupSchema = z
 
 export function SignupForm() {
   const router = useRouter();
-  const { signUp, error: authError } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<{
     email?: string;
     password?: string;
@@ -39,6 +39,7 @@ export function SignupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationErrors({});
+    setError(null);
 
     try {
       const result = signupSchema.safeParse({
@@ -64,10 +65,25 @@ export function SignupForm() {
       }
 
       setIsLoading(true);
-      const signupResult = await signUp(email, password);
-      if (!signupResult?.error) {
-        router.push("/dashboard");
+
+      const supabase = createClient();
+
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/signup/confirm-email`,
+        },
+      });
+
+      if (signUpError) {
+        setError(signUpError.message);
+        return;
       }
+
+      router.push(
+        `/auth/signup/check-inbox?email=${encodeURIComponent(email)}`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -84,9 +100,9 @@ export function SignupForm() {
                 Sign up to get started
               </p>
             </div>
-            {authError && (
+            {error && (
               <div className="text-sm text-destructive text-center">
-                {authError}
+                {error}
               </div>
             )}
             <div className="grid gap-2">

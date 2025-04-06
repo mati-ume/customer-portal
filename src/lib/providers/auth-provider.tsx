@@ -18,7 +18,6 @@ export const AuthContext = React.createContext<
       logIn: (email: string, password: string) => any;
       logOut: () => any;
       refreshUser: () => any;
-      signUp: (email: string, password: string) => any;
     }
   | undefined
 >(undefined);
@@ -149,44 +148,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAuthUser(undefined);
     setUser(undefined);
 
-    setLoading(false);
-  };
-
-  const signUp = async (email: string, password: string) => {
-    setError(null);
-    setLoading(true);
-
-    const supabase = createClient();
-
-    const { data: authData, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (signUpError) {
-      setError(signUpError.message);
-      setLoading(false);
-      return { error: signUpError.message };
-    }
-
-    if (!authData.user) {
-      setError("Failed to create user account");
-      setLoading(false);
-      return { error: "Failed to create user account" };
-    }
-
-    const { error: userError } = await supabase.from("users").insert({
-      id: authData.user.id,
-    });
-
-    if (userError) {
-      setError("Failed to create user profile");
-      setLoading(false);
-      return { error: userError.message };
-    }
-
-    setAuthUser(authData.user);
-    await fetchUser();
     setLoading(false);
   };
 
