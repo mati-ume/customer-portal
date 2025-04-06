@@ -1,40 +1,19 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-
-export default function Home() {
-  return (
-    <div className="container mx-auto min-h-screen flex flex-col items-center justify-center p-4 gap-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold">
-          Welcome to Next Supa Shad Boilerplate
-        </h1>
-        <span className="text-muted-foreground max-w-md">
-          A starter template with Next.js, Supabase, and ShadCN UI. Check out
-          the README to get started.
-        </span>
-      </div>
-
-      <div className="flex gap-4">
-        <Button asChild>
-          <Link href="/auth/signup">Sign Up</Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link href="/auth/login">Login</Link>
-        </Button>
-      </div>
-
-      <div className="mt-8 text-sm text-muted-foreground">
-        <p>
-          Need help getting started? Check out the{" "}
-          <Link
-            href="https://github.com/alexandros-lekkas/next-supa-shad-boilerplate/blob/main/README.md"
-            className="underline hover:text-foreground"
-          >
-            README
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+/**
+ * This page is used to redirect the user to the landing page as it is the
+ * default page of the app.
+ *
+ * If you want to edit the landing page, you can do so in the `(main)/landing`
+ * folder. The landing page is within the `(main)` folder so that it inherits
+ * from the `(main)/layout.tsx` file (which contains the header and footer).
+ *
+ * If you don't want this page to redirect, you can remove the `redirect`
+ * function and the page will display the landing page as the main page of the
+ * app without the header and footer.
+ *
+ * @returns A redirect to the landing page.
+ */
+export default function Page() {
+  redirect("/landing");
 }

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "A boilerplate for Next.js with Supabase and Shadcn/UI",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -38,7 +38,7 @@ export default function RootLayout({
           >
             <NextTopLoader showSpinner={false} />
             {children}
-            <Toaster />
+            <Toaster position="bottom-right" />
           </ThemeProvider>
         </body>
       </AuthProvider>
