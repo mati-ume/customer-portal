@@ -92,3 +92,33 @@ npx supabase gen types typescript --project-id your-project-id > src/lib/supabas
 ```bash
 npm run dev
 ```
+
+### RBAC (Role-Based Access Control) Setup
+
+This template comes with RBAC middleware setup out of the box. To begin using
+roles, you will need to create a few tables in your Supabase project.
+
+Before doing this, please complete all the steps of the initial project setup.
+As otherwise you will not have a `public.users` table to link to.
+
+1. Create a `roles` table
+
+```psql
+create table public.roles (
+  id uuid primary key,
+  created_at timestamptz default now(),
+);
+```
+
+2. Create a `user_roles` table
+
+```psql
+create table public.user_roles (
+  id uuid primary key,
+  created_at timestamptz default now(),
+  user_id uuid not null,
+  role_id uuid not null,
+  constraint fk_user_id foreign key (user_id) references public.users(id) on delete cascade,
+  constraint fk_role_id foreign key (role_id) references public.roles(id) on delete cascade
+);
+```
