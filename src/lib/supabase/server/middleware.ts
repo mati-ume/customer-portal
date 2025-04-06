@@ -5,6 +5,20 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 import { checkAllRoles, checkAuth, checkRole } from "./auth";
 
+/**
+ * Protects a path by checking if the user is authenticated and has the required
+ * roles. If the user is not authenticated or does not have the required roles,
+ * they are redirected to the unauthorized path.
+ *
+ * @param supabase - The Supabase client.
+ * @param roles - The roles required to access the path.
+ * @param allRequired - Whether all roles are required.
+ * @param unauthorizedPath - The path to redirect to if the user is not
+ *                           authorized.
+ *
+ * @returns The path to redirect to if the user is not authorized, or null if
+ *          the user is authorized.
+ */
 async function protectPath(
   supabase: SupabaseClient,
   roles: string[] | null,
