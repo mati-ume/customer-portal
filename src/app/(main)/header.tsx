@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useRef, useEffect } from "react";
+
+import { LogOutIcon, LayoutDashboardIcon } from "lucide-react";
 
 import { useAuth } from "@/lib/hooks/use-auth";
 import { createClient } from "@/lib/supabase/client";
@@ -18,6 +19,66 @@ import {
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
+
+const AuthNav = ({ authUser }: { authUser: any }) => {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
+  return (
+    <div className="flex items-center gap-4">
+      {authUser ? (
+        <div className="flex items-center gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <Avatar className="border size-10">
+                <AvatarImage src={authUser.user_metadata?.avatar_url} />
+                <AvatarFallback className="text-muted-foreground font-semibold">
+                  {authUser.email?.[0].toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <LayoutDashboardIcon className="size-4 text-foreground" />
+                <Link href="/dashboard">Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="cursor-pointer"
+              >
+                <LogOutIcon className="size-4 text-destructive" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className="flex gap-2">
+          <Link href="/auth/login">
+            <Button variant="outline">Log In</Button>
+          </Link>
+          <Link href="/auth/signup">
+            <Button>Sign Up</Button>
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+};
 
 /**
  * Add routes where the header should not be sticky. I personally use this
@@ -56,9 +117,7 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { user } = useAuth();
-
-  const supabase = createClient();
+  const { authUser } = useAuth();
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -68,18 +127,13 @@ export function Header() {
     router.push(href);
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
-
   return (
     <header
       className={`border-b bg-background ${
         !nonStickyRoutes.includes(pathname) ? "sticky top-0" : ""
       } z-50`}
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center">
             <Logo />
@@ -124,30 +178,7 @@ export function Header() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="flex items-center gap-4">
-            {user ? (
-              <div className="flex items-center gap-4">
-                <Avatar>
-                  <AvatarImage src={user.user_metadata?.avatar_url} />
-                  <AvatarFallback>
-                    {user.email?.[0].toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <Button variant="ghost" onClick={handleSignOut}>
-                  Sign Out
-                </Button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Link href="/auth/login">
-                  <Button variant="outline">Log In</Button>
-                </Link>
-                <Link href="/auth/signup">
-                  <Button>Sign Up</Button>
-                </Link>
-              </div>
-            )}
-          </div>
+          <AuthNav authUser={authUser} />
         </div>
       </div>
     </header>
