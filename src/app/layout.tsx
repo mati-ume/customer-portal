@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { AuthProvider } from "@/lib/providers/auth-provider";
+import { brand } from "@/lib/constants/brand";
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -16,8 +17,8 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "Next Supa Shad Boilerplate",
-  description: "A boilerplate for Next.js with Supabase and Shadcn/UI",
+  title: brand.name,
+  description: brand.description,
 };
 
 export default function Layout({
