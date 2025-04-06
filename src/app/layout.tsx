@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 
+import NextTopLoader from "nextjs-toploader";
+
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { AuthProvider } from "@/lib/providers/auth-provider";
 
@@ -34,9 +36,10 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="theme-preference"
           >
+            <NextTopLoader showSpinner={false} />
             {children}
+            <Toaster />
           </ThemeProvider>
-          <Toaster />
         </body>
       </AuthProvider>
     </html>
