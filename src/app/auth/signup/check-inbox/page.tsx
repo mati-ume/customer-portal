@@ -11,7 +11,7 @@ export default function CheckInboxPage() {
   const email = searchParams.get("email");
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
       <div className="w-full max-w-md">
         <Card>
           <CardContent className="p-6">
@@ -23,13 +23,9 @@ export default function CheckInboxPage() {
                 inbox and click the link to verify your email address.
               </p>
               <p className="text-sm text-muted-foreground">
-                Didn't receive the email? Check your spam folder or{" "}
-                <Link href="/auth/signup" className="underline underline-offset-4">
-                  try again
-                </Link>
-                .
+                Didn't receive the email? Check your spam folder or contact support.
               </p>
-              <Button asChild>
+              <Button asChild className="w-full">
                 <Link href="/auth/login">Back to login</Link>
               </Button>
             </div>
