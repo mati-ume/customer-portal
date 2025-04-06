@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { User as AuthUser } from "@supabase/supabase-js";
 
-import { createClient } from "@/lib/supabase/client/client";
+import { createClient } from "@/lib/supabase/client";
 
 import { Database } from "@/types/supabase";
 
@@ -22,14 +22,6 @@ export const AuthContext = React.createContext<
     }
   | undefined
 >(undefined);
-
-export function useAuth() {
-  const context = React.useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authUser, setAuthUser] = React.useState<AuthUser | undefined>(
