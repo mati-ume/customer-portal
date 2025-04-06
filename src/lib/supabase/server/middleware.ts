@@ -26,6 +26,21 @@ async function protectPath(
   return null;
 }
 
+const protectedRoutes = [
+  {
+    path: "/dashboard",
+    roles: ["Admin"],
+    unauthorizedPath: "/auth/login",
+  },
+  // Add more protected routes here as needed
+  // Example:
+  // {
+  //   path: "/admin",
+  //   roles: ["admin"],
+  //   unauthorizedPath: "/unauthorized"
+  // }
+];
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -59,9 +74,17 @@ export async function updateSession(request: NextRequest) {
   const isAuthenticated = await checkAuth(supabase);
   const url = request.nextUrl.clone();
 
-  if (request.nextUrl.pathname.startsWith("/dashboard")) {
-    if (!isAuthenticated) {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+  for (const route of protectedRoutes) {
+    if (request.nextUrl.pathname.startsWith(route.path)) {
+      const unauthorizedPath = await protectPath(
+        supabase,
+        route.roles,
+        false,
+        route.unauthorizedPath
+      );
+      if (unauthorizedPath) {
+        return NextResponse.redirect(new URL(unauthorizedPath, request.url));
+      }
     }
   }
 
