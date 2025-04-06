@@ -52,34 +52,13 @@ const sections = [
   },
 ];
 
-/**
- * Export a ref that other components can use to access the header. I use this
- * when I want to make a component take up the full height of the page when the
- * header is fixed.
- *
- * Because the header is fixed, we need to export a ref that other components
- * can shrink their page height to be the height of the page - the height of the
- * header.
- */
-export const headerRef = { current: null as HTMLElement | null };
-
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useAuth();
-  const supabase = createClient();
 
-  // Export the header height for use in other components
-  useEffect(() => {
-    if (headerRef.current) {
-      const height = headerRef.current.offsetHeight;
-      // Store the height in a CSS custom property
-      document.documentElement.style.setProperty(
-        "--header-height",
-        `${height}px`
-      );
-    }
-  }, []);
+  const { user } = useAuth();
+
+  const supabase = createClient();
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -96,9 +75,6 @@ export function Header() {
 
   return (
     <header
-      ref={(el) => {
-        headerRef.current = el;
-      }}
       className={`border-b bg-background ${
         !nonStickyRoutes.includes(pathname) ? "sticky top-0" : ""
       } z-50`}
