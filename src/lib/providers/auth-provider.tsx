@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .from("users")
         .select("*")
         .eq("id", authUser.id)
-        .single();
+        .maybeSingle();
 
       if (fetchError) {
         setError("Failed to load user data. Please refresh the page.");
