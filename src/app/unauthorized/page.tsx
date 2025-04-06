@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 export default function UnauthorizedPage({
   searchParams,
@@ -11,9 +12,11 @@ export default function UnauthorizedPage({
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4">
       <h1 className="text-2xl font-bold">Unauthorized</h1>
+
       <p className="text-muted-foreground">
         You are not authorized to access this page.
       </p>
+      
       <Button asChild>
         <Link href={previousPath}>Return to previous page</Link>
       </Button>

@@ -1,8 +1,12 @@
-# Next Supa Shad Boilerplate 🌐
+# Next Supa Shad Template 🌐
 
-NextJS, Supabase, & ShadCN boilerplate to set-up your projects faster.
+A modern, opinionated template for rapid web development.
 
 ## About 🧑‍💻
+
+Are you a startup founder, developer, or hackathon participant looking to build a web app quickly? Want to skip the boilerplate and get right to building your app?
+
+This template is for you!
 
 This boilerplate helps you launch modern web apps faster with:
 
@@ -10,17 +14,24 @@ This boilerplate helps you launch modern web apps faster with:
 - Supabase for auth and database
 - ShadCN/UI for beautifully styled components
 
-I personally use this setup for all my full-stack projects.
+And so much more!
 
 ## Features 🌟
 
 - Authentication (login, signup)
 - Route protection
-- A myriad of pre-installed components
-- Theming
+- A myriad of pre-installed components (shadcn/ui)
+- Built-in theming
 - Dashboard layout (with sidebar)
+- Unauthorized page with redirect to previous page pre-configured
+- A 404 page
+- Supabase email verification
+
+If there's anything missing here that you think should be added, please open an issue!
 
 ## Tech Stack 🛠️
+
+This tech stack is what I'm currently most comfortable with and what I've found to be the most useful. If I ever decide to change it, I'll make a new template.
 
 - [Next.js](https://nextjs.org/) – React Framework
 - [Supabase](https://supabase.com/) – Auth & DB
@@ -29,6 +40,10 @@ I personally use this setup for all my full-stack projects.
 - [TypeScript](https://www.typescriptlang.org/) – Typed JS
 
 ## Setup & Getting Started 🚀
+
+Note: Instead of cloning the repo, you can use this template by clicking the "Use this template" button above.
+
+Cloning the repo works fine too, but you'll have to delete the `.git` folder and initialize a new one if you want to push to a new GitHub repo.
 
 1. Clone the repository
 
