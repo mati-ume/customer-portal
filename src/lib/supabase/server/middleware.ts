@@ -7,11 +7,20 @@ import { checkAllRoles, checkAuth, checkRole } from "./auth";
 
 async function protectPath(
   supabase: SupabaseClient,
-  roles: string[],
+  roles: string[] | null,
   allRequired: boolean = false,
   unauthorizedPath: string = "/unauthorized"
 ) {
   let authorized = false;
+
+  const isAuthenticated = await checkAuth(supabase);
+  if (!isAuthenticated) {
+    return unauthorizedPath;
+  }
+
+  if (!roles || roles.length === 0) {
+    return null;
+  }
 
   if (allRequired) {
     authorized = await checkAllRoles(supabase, roles);
@@ -29,8 +38,8 @@ async function protectPath(
 const protectedRoutes = [
   {
     path: "/dashboard",
-    roles: ["Admin"],
-    unauthorizedPath: "/auth/login",
+    roles: [], // This route only requires authentication, no specific roles
+    unauthorizedPath: "/unauthorized",
   },
   // Add more protected routes here as needed
   // Example:
@@ -71,9 +80,6 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const isAuthenticated = await checkAuth(supabase);
-  const url = request.nextUrl.clone();
-
   for (const route of protectedRoutes) {
     if (request.nextUrl.pathname.startsWith(route.path)) {
       const unauthorizedPath = await protectPath(
@@ -83,7 +89,10 @@ export async function updateSession(request: NextRequest) {
         route.unauthorizedPath
       );
       if (unauthorizedPath) {
-        return NextResponse.redirect(new URL(unauthorizedPath, request.url));
+        const redirectUrl = new URL(unauthorizedPath, request.url);
+        const previousPage = request.headers.get("referer") || "/";
+        redirectUrl.searchParams.set("from", previousPage);
+        return NextResponse.redirect(redirectUrl);
       }
     }
   }
