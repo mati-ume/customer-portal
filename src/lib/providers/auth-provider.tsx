@@ -163,7 +163,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logIn,
       logOut,
       refreshUser: fetchUser,
-      signUp,
     }),
     [user, authUser, loading, error, isAuthenticated]
   );
