@@ -62,10 +62,6 @@ npm install --legacy-peer-deps
 
 3. Create a `.env.local` file and add your environment variables
 
-```bash
-cp .env.example .env.local
-```
-
 4. Create a Supabase project and add your environment variables in the `.env.local` file
 
 ```bash
