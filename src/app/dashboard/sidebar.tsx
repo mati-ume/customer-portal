@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Computer, LayoutDashboard } from "lucide-react";
+import { Computer, LayoutDashboard, User } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +22,11 @@ const items = [
     url: "/dashboard",
     icon: LayoutDashboard,
   },
+  {
+    title: "Profile",
+    url: "/user/profile",
+    icon: User,
+  },
 ];
 
 export function AppSidebar() {
@@ -35,7 +40,7 @@ export function AppSidebar() {
             <Link href={"/dashboard"} passHref legacyBehavior>
               <SidebarMenuButton className="bg-secondary text-foreground py-6 px-4 text-lg transition-all duration-150 cursor-pointer">
                 <Computer className="h-5 w-5" />
-                <span className="text-base font-semibold">Next Supa Shad</span>
+                <span className="text-base font-semibold">Ume Loans</span>
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
@@ -44,7 +49,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Main</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

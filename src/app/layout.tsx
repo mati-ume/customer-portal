@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { AuthProvider } from "@/lib/providers/auth-provider";
 import { brand } from "@/lib/constants/brand";
 
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 
@@ -39,7 +39,7 @@ export default function Layout({
           >
             <NextTopLoader showSpinner={false} />
             {children}
-            <Toaster position="bottom-right" />
+            <Toaster />
           </ThemeProvider>
         </body>
       </AuthProvider>
