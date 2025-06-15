@@ -2,13 +2,20 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { LoanDetails } from "./loan-details";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
+// Remove the custom PageProps interface and use Next.js built-in types
+export default async function LoanPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const { id } = await params;
+  
+  const data = await getLoan(id);
 
-export default async function LoanDetailsPage({ params }: PageProps) {
+  if (!data) {
+    notFound();
+  }
+
   const supabase = await createClient();
   
   const { data: { user } } = await supabase.auth.getUser();
@@ -20,7 +27,7 @@ export default async function LoanDetailsPage({ params }: PageProps) {
   const { data: loan, error } = await supabase
     .from("loans")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (error || !loan) {
@@ -33,4 +40,4 @@ export default async function LoanDetailsPage({ params }: PageProps) {
   }
 
   return <LoanDetails loan={loan} />;
-} 
+}
