@@ -3,12 +3,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function UnauthorizedPage({
+type UnauthorizedPageProps = {
+  searchParams: Promise<{ from?: string }>;
+};
+
+export default async function UnauthorizedPage({
   searchParams,
-}: {
-  searchParams: { from?: string };
-}) {
-  const previousPath = searchParams.from || "/";
+}: UnauthorizedPageProps) {
+  const { from } = await searchParams;
+  const previousPath = from || "/";
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
