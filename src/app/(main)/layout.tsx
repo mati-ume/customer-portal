@@ -7,10 +7,10 @@ export default function MainLayout({
 }) {
   return (
     <main>
-      <Header />
+      {/* <Header /> */}
 
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

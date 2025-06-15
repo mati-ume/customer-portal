@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Computer, LayoutDashboard, User } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Computer, LayoutDashboard, User, LogOut } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 import {
   Sidebar,
@@ -14,6 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -31,6 +33,13 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/landing");
+  };
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
@@ -69,6 +78,20 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={handleLogout}
+              className="hover:bg-destructive/10 text-destructive py-5 px-4 text-lg transition-all duration-150 cursor-pointer"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-base">Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -5,9 +5,9 @@ import { Computer } from "lucide-react";
  */
 export const brand = {
   lucideIcon: Computer,
-  name: "Next Supa Shad Template",
-  description: "A starter template with Next.js, Supabase, and ShadCN UI.",
-  email: "email@example.com",
+  name: "Ume Loans",
+  description: "We Believe in Financial Second Chances",
+  email: "info@umeloans.com",
   social: {
     github: "https://github.com/example",
     twitter: "https://twitter.com/example",
