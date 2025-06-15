@@ -5,59 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, PlusCircleIcon, ArrowUpIcon, CalendarClockIcon } from "lucide-react";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
+type LoanPageProps = {
+  params: Promise<{ id: string }>;
+};
 
-async function getLoan(id: string) {
-  try {
-    const supabase = await createClient();
-    
-    // Get the current session
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    
-    if (userError || !user) {
-      console.error('Authentication error:', userError);
-      redirect('/auth/login');
-    }
-
-    // Get loan details
-    const { data: loan, error: loanError } = await supabase
-      .from('loans')
-      .select('*')
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (loanError || !loan) {
-      console.error('Error fetching loan:', loanError);
-      return null;
-    }
-
-    // Get recent transactions
-    const { data: transactions, error: transactionsError } = await supabase
-      .from('loan_transactions')
-      .select('*')
-      .eq('loan_id', id)
-      .order('transaction_date', { ascending: false })
-      .limit(5);
-
-    if (transactionsError) {
-      console.error('Error fetching transactions:', transactionsError);
-      return { loan, transactions: [] };
-    }
-
-    return { loan, transactions };
-  } catch (error) {
-    console.error('Error:', error);
-    return null;
-  }
-}
-
-export default async function LoanPage({ params }: PageProps) {
-  const data = await getLoan(params.id);
+export default async function LoanPage({ params }: LoanPageProps) {
+  const { id } = await params;
+  const data = await getLoan(id);
 
   if (!data) {
     notFound();
@@ -195,4 +149,49 @@ export default async function LoanPage({ params }: PageProps) {
       </Card>
     </div>
   );
-} 
+}
+
+async function getLoan(id: string) {
+  try {
+    const supabase = await createClient();
+    
+    // Get the current session
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !user) {
+      console.error('Authentication error:', userError);
+      redirect('/auth/login');
+    }
+
+    // Get loan details
+    const { data: loan, error: loanError } = await supabase
+      .from('loans')
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (loanError || !loan) {
+      console.error('Error fetching loan:', loanError);
+      return null;
+    }
+
+    // Get recent transactions
+    const { data: transactions, error: transactionsError } = await supabase
+      .from('loan_transactions')
+      .select('*')
+      .eq('loan_id', id)
+      .order('transaction_date', { ascending: false })
+      .limit(5);
+
+    if (transactionsError) {
+      console.error('Error fetching transactions:', transactionsError);
+      return { loan, transactions: [] };
+    }
+
+    return { loan, transactions };
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
