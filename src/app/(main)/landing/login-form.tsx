@@ -105,12 +105,12 @@ export function LandingLoginForm() {
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? "Logging in..." : "Continue"}
         </Button>
-        <div className="text-center text-sm">
+        {/* <div className="text-center text-sm"> @MATI Disabled signup for now.
           Don&apos;t have an account?{" "}
           <a href="/auth/signup" className="underline underline-offset-4">
             Sign up
           </a>
-        </div>
+        </div> */}
       </form>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
         By clicking continue, you agree to our{" "}
