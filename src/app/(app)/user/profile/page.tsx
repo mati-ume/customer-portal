@@ -28,6 +28,7 @@ export default function UserProfilePage() {
   const [formData, setFormData] = React.useState({
     first_name: "",
     last_name: "",
+    email: "",
     phone_number: "",
     residential_address: "",
   });
@@ -56,6 +57,7 @@ export default function UserProfilePage() {
         setFormData({
           first_name: data.first_name || "",
           last_name: data.last_name || "",
+          email: data.email || "",
           phone_number: data.phone_number || "",
           residential_address: data.residential_address || "",
         });
@@ -95,6 +97,7 @@ export default function UserProfilePage() {
         .update({
           first_name: formData.first_name,
           last_name: formData.last_name,
+          email: formData.email,
           phone_number: formData.phone_number,
           residential_address: formData.residential_address,
         })
@@ -144,28 +147,13 @@ export default function UserProfilePage() {
   return (
     <div className="p-6">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle>Profile Information</CardTitle>
-          <Button
-            variant="outline"
-            onClick={() => setIsEditing(!isEditing)}
-            disabled={isLoading}
-          >
-            {isEditing ? "Cancel" : "Edit Profile"}
-          </Button>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  value={profile?.email}
-                  disabled
-                  className="bg-muted"
-                />
-              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="first_name">First Name</Label>
                 <Input
@@ -183,6 +171,16 @@ export default function UserProfilePage() {
                   name="last_name"
                   value={formData.last_name}
                   onChange={handleInputChange}
+                  disabled={!isEditing || isLoading}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  onChange={handleInputChange}
+                  value={formData.email}
                   disabled={!isEditing || isLoading}
                 />
               </div>
@@ -208,13 +206,32 @@ export default function UserProfilePage() {
                 />
               </div>
             </div>
-            {isEditing && (
-              <div className="flex justify-end">
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? "Saving..." : "Save Changes"}
+            <div className="flex justify-center">
+              {isEditing ? (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsEditing(false)}
+                    disabled={isLoading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditing(true)}
+                  disabled={isLoading}
+                >
+                  Edit Profile
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </form>
         </CardContent>
       </Card>

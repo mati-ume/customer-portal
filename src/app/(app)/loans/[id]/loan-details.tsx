@@ -1,24 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
-import { formatCurrency } from "@/lib/utils";
-import { notFound, redirect } from "next/navigation";
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, PlusCircleIcon, ArrowUpIcon, CalendarClockIcon } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
-type LoanPageProps = {
-  params: Promise<{ id: string }>;
-};
+interface LoanDetailsProps {
+  loan: any;
+  transactions: any[];
+}
 
-export default async function LoanPage({ params }: LoanPageProps) {
-  const { id } = await params;
-  const data = await getLoan(id);
-
-  if (!data) {
-    notFound();
-  }
-
-  const { loan, transactions } = data;
-
+export function LoanDetails({ loan, transactions }: LoanDetailsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Loan Summary Section */}
@@ -149,49 +141,4 @@ export default async function LoanPage({ params }: LoanPageProps) {
       </Card>
     </div>
   );
-}
-
-async function getLoan(id: string) {
-  try {
-    const supabase = await createClient();
-    
-    // Get the current session
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    
-    if (userError || !user) {
-      console.error('Authentication error:', userError);
-      redirect('/auth/login');
-    }
-
-    // Get loan details
-    const { data: loan, error: loanError } = await supabase
-      .from('loans')
-      .select('*')
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (loanError || !loan) {
-      console.error('Error fetching loan:', loanError);
-      return null;
-    }
-
-    // Get recent transactions
-    const { data: transactions, error: transactionsError } = await supabase
-      .from('loan_transactions')
-      .select('*')
-      .eq('loan_id', id)
-      .order('transaction_date', { ascending: false })
-      .limit(5);
-
-    if (transactionsError) {
-      console.error('Error fetching transactions:', transactionsError);
-      return { loan, transactions: [] };
-    }
-
-    return { loan, transactions };
-  } catch (error) {
-    console.error('Error:', error);
-    return null;
-  }
-}
+} 

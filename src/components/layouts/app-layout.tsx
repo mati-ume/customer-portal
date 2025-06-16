@@ -3,7 +3,6 @@
 import * as React from "react";
 import { ThemeProvider } from "next-themes";
 import { usePathname } from "next/navigation";
-
 import { Toaster } from "@/components/ui/sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import {
@@ -15,13 +14,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-import { AppSidebar } from "./sidebar";
+import { AppSidebar } from "@/components/layouts/sidebar";
 
-export default function DashboardLayout({
-  children,
-}: {
+interface AppLayoutProps {
   children: React.ReactNode;
-}) {
+  basePath: string;
+}
+
+export function AppLayout({ children, basePath }: AppLayoutProps) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
 
@@ -40,21 +40,18 @@ export default function DashboardLayout({
               <SidebarTrigger />
               <Breadcrumb>
                 <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  {pathSegments.slice(1).map((segment, index) => (
+                  {pathSegments.map((segment, index) => (
                     <React.Fragment key={segment}>
-                      <BreadcrumbSeparator />
+                      {index > 0 && <BreadcrumbSeparator />}
                       <BreadcrumbItem>
-                        {index === pathSegments.slice(1).length - 1 ? (
+                        {index === pathSegments.length - 1 ? (
                           <BreadcrumbPage className="capitalize">
                             {segment}
                           </BreadcrumbPage>
                         ) : (
                           <BreadcrumbLink
                             href={`/${pathSegments
-                              .slice(0, index + 2)
+                              .slice(0, index + 1)
                               .join("/")}`}
                             className="capitalize"
                           >
@@ -77,4 +74,4 @@ export default function DashboardLayout({
       </SidebarProvider>
     </ThemeProvider>
   );
-}
+} 

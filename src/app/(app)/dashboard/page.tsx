@@ -73,10 +73,10 @@ export default function DashboardPage() {
         ) : applications.length === 0 ? (
           <div className="text-center py-10 space-y-4">
             <p className="text-muted-foreground">You don't have any loan applications.</p>
-            <Button onClick={handleNewApplication}>
-              <PlusCircleIcon className="mr-2 h-4 w-4" />
+            {/* <Button onClick={handleNewApplication}>
+              <PlusCircleIcon className="mr-2 h-4 w-4" /> @MATI ADD BUTTON ONCE WE HAVE THE FORM.
               New Application
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
